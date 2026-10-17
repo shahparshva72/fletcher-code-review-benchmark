@@ -1,0 +1,1360 @@
+{
+  "Opus 4.5": {
+    "qodo-extended-v2": {
+      "tp": 106,
+      "fp": 50,
+      "fn": 67,
+      "prs": 50,
+      "precision": 67.9,
+      "recall": 61.3,
+      "f1": 64.4
+    },
+    "cubic-v2": {
+      "tp": 108,
+      "fp": 65,
+      "fn": 65,
+      "prs": 50,
+      "precision": 62.4,
+      "recall": 62.4,
+      "f1": 62.4
+    },
+    "augment": {
+      "tp": 108,
+      "fp": 70,
+      "fn": 65,
+      "prs": 50,
+      "precision": 60.7,
+      "recall": 62.4,
+      "f1": 61.5
+    },
+    "qodo-v2": {
+      "tp": 102,
+      "fp": 79,
+      "fn": 71,
+      "prs": 50,
+      "precision": 56.4,
+      "recall": 59.0,
+      "f1": 57.6
+    },
+    "gitlab": {
+      "tp": 91,
+      "fp": 72,
+      "fn": 82,
+      "prs": 50,
+      "precision": 55.8,
+      "recall": 52.6,
+      "f1": 54.2
+    },
+    "macroscope": {
+      "tp": 81,
+      "fp": 49,
+      "fn": 92,
+      "prs": 50,
+      "precision": 62.3,
+      "recall": 46.8,
+      "f1": 53.5
+    },
+    "greptile-v4-1": {
+      "tp": 89,
+      "fp": 78,
+      "fn": 84,
+      "prs": 50,
+      "precision": 53.3,
+      "recall": 51.4,
+      "f1": 52.4
+    },
+    "gemini-v2": {
+      "tp": 95,
+      "fp": 105,
+      "fn": 78,
+      "prs": 50,
+      "precision": 47.5,
+      "recall": 54.9,
+      "f1": 50.9
+    },
+    "bugbot": {
+      "tp": 78,
+      "fp": 56,
+      "fn": 95,
+      "prs": 50,
+      "precision": 58.2,
+      "recall": 45.1,
+      "f1": 50.8
+    },
+    "copilot-v2": {
+      "tp": 115,
+      "fp": 168,
+      "fn": 58,
+      "prs": 50,
+      "precision": 40.6,
+      "recall": 66.5,
+      "f1": 50.4
+    },
+    "devin": {
+      "tp": 68,
+      "fp": 29,
+      "fn": 105,
+      "prs": 50,
+      "precision": 70.1,
+      "recall": 39.3,
+      "f1": 50.4
+    },
+    "qodo-extended-summary": {
+      "tp": 92,
+      "fp": 137,
+      "fn": 45,
+      "prs": 50,
+      "precision": 40.2,
+      "recall": 67.2,
+      "f1": 50.3
+    },
+    "mergemonkey": {
+      "tp": 73,
+      "fp": 84,
+      "fn": 64,
+      "prs": 50,
+      "precision": 46.5,
+      "recall": 53.3,
+      "f1": 49.7
+    },
+    "qodo-v22": {
+      "tp": 75,
+      "fp": 93,
+      "fn": 62,
+      "prs": 50,
+      "precision": 44.6,
+      "recall": 54.7,
+      "f1": 49.2
+    },
+    "claude-code": {
+      "tp": 84,
+      "fp": 88,
+      "fn": 89,
+      "prs": 50,
+      "precision": 48.8,
+      "recall": 48.6,
+      "f1": 48.7
+    },
+    "sourcery": {
+      "tp": 95,
+      "fp": 125,
+      "fn": 78,
+      "prs": 50,
+      "precision": 43.2,
+      "recall": 54.9,
+      "f1": 48.3
+    },
+    "propel-v2": {
+      "tp": 68,
+      "fp": 85,
+      "fn": 69,
+      "prs": 50,
+      "precision": 44.4,
+      "recall": 49.6,
+      "f1": 46.9
+    },
+    "qodo-extended": {
+      "tp": 86,
+      "fp": 145,
+      "fn": 51,
+      "prs": 50,
+      "precision": 37.2,
+      "recall": 62.8,
+      "f1": 46.7
+    },
+    "gitar": {
+      "tp": 62,
+      "fp": 71,
+      "fn": 75,
+      "prs": 50,
+      "precision": 46.6,
+      "recall": 45.3,
+      "f1": 45.9
+    },
+    "propel": {
+      "tp": 53,
+      "fp": 42,
+      "fn": 84,
+      "prs": 50,
+      "precision": 55.8,
+      "recall": 38.7,
+      "f1": 45.7
+    },
+    "baz": {
+      "tp": 62,
+      "fp": 37,
+      "fn": 111,
+      "prs": 50,
+      "precision": 62.6,
+      "recall": 35.8,
+      "f1": 45.6
+    },
+    "kodus-v2": {
+      "tp": 62,
+      "fp": 42,
+      "fn": 111,
+      "prs": 50,
+      "precision": 59.6,
+      "recall": 35.8,
+      "f1": 44.8
+    },
+    "qodo-v2-2": {
+      "tp": 57,
+      "fp": 64,
+      "fn": 80,
+      "prs": 50,
+      "precision": 47.1,
+      "recall": 41.6,
+      "f1": 44.2
+    },
+    "coderabbit": {
+      "tp": 103,
+      "fp": 194,
+      "fn": 70,
+      "prs": 50,
+      "precision": 34.7,
+      "recall": 59.5,
+      "f1": 43.8
+    },
+    "cubic-dev": {
+      "tp": 104,
+      "fp": 241,
+      "fn": 33,
+      "prs": 50,
+      "precision": 30.1,
+      "recall": 75.9,
+      "f1": 43.2
+    },
+    "greptile-v5": {
+      "tp": 78,
+      "fp": 116,
+      "fn": 95,
+      "prs": 50,
+      "precision": 40.2,
+      "recall": 45.1,
+      "f1": 42.5
+    },
+    "greptile-v4": {
+      "tp": 78,
+      "fp": 158,
+      "fn": 59,
+      "prs": 50,
+      "precision": 33.1,
+      "recall": 56.9,
+      "f1": 41.8
+    },
+    "claude": {
+      "tp": 66,
+      "fp": 79,
+      "fn": 107,
+      "prs": 50,
+      "precision": 45.5,
+      "recall": 38.2,
+      "f1": 41.5
+    },
+    "greptile": {
+      "tp": 54,
+      "fp": 76,
+      "fn": 83,
+      "prs": 50,
+      "precision": 41.5,
+      "recall": 39.4,
+      "f1": 40.4
+    },
+    "codeant-v2": {
+      "tp": 68,
+      "fp": 97,
+      "fn": 105,
+      "prs": 50,
+      "precision": 41.2,
+      "recall": 39.3,
+      "f1": 40.2
+    },
+    "qodo": {
+      "tp": 61,
+      "fp": 131,
+      "fn": 76,
+      "prs": 50,
+      "precision": 31.8,
+      "recall": 44.5,
+      "f1": 37.1
+    },
+    "copilot": {
+      "tp": 73,
+      "fp": 185,
+      "fn": 64,
+      "prs": 50,
+      "precision": 28.3,
+      "recall": 53.3,
+      "f1": 37.0
+    },
+    "gemini": {
+      "tp": 51,
+      "fp": 113,
+      "fn": 86,
+      "prs": 50,
+      "precision": 31.1,
+      "recall": 37.2,
+      "f1": 33.9
+    },
+    "mra-b": {
+      "tp": 57,
+      "fp": 171,
+      "fn": 80,
+      "prs": 50,
+      "precision": 25.0,
+      "recall": 41.6,
+      "f1": 31.2
+    },
+    "mra-a": {
+      "tp": 61,
+      "fp": 198,
+      "fn": 74,
+      "prs": 49,
+      "precision": 23.6,
+      "recall": 45.2,
+      "f1": 31.0
+    },
+    "kodus": {
+      "tp": 61,
+      "fp": 205,
+      "fn": 76,
+      "prs": 50,
+      "precision": 22.9,
+      "recall": 44.5,
+      "f1": 30.3
+    },
+    "mesa": {
+      "tp": 62,
+      "fp": 259,
+      "fn": 75,
+      "prs": 50,
+      "precision": 19.3,
+      "recall": 45.3,
+      "f1": 27.1
+    },
+    "mra-ultra": {
+      "tp": 51,
+      "fp": 227,
+      "fn": 86,
+      "prs": 50,
+      "precision": 18.3,
+      "recall": 37.2,
+      "f1": 24.6
+    },
+    "entelligence": {
+      "tp": 28,
+      "fp": 65,
+      "fn": 109,
+      "prs": 50,
+      "precision": 30.1,
+      "recall": 20.4,
+      "f1": 24.3
+    },
+    "kg": {
+      "tp": 26,
+      "fp": 21,
+      "fn": 147,
+      "prs": 50,
+      "precision": 55.3,
+      "recall": 15.0,
+      "f1": 23.6
+    },
+    "mra-openai": {
+      "tp": 48,
+      "fp": 242,
+      "fn": 89,
+      "prs": 50,
+      "precision": 16.6,
+      "recall": 35.0,
+      "f1": 22.5
+    },
+    "mra-mix": {
+      "tp": 48,
+      "fp": 241,
+      "fn": 89,
+      "prs": 50,
+      "precision": 16.6,
+      "recall": 35.0,
+      "f1": 22.5
+    },
+    "mra-claude": {
+      "tp": 48,
+      "fp": 257,
+      "fn": 89,
+      "prs": 50,
+      "precision": 15.7,
+      "recall": 35.0,
+      "f1": 21.7
+    },
+    "codeant": {
+      "tp": 67,
+      "fp": 415,
+      "fn": 70,
+      "prs": 50,
+      "precision": 13.9,
+      "recall": 48.9,
+      "f1": 21.6
+    },
+    "mra-nano": {
+      "tp": 24,
+      "fp": 166,
+      "fn": 113,
+      "prs": 50,
+      "precision": 12.6,
+      "recall": 17.5,
+      "f1": 14.7
+    },
+    "mra-max": {
+      "tp": 47,
+      "fp": 481,
+      "fn": 90,
+      "prs": 50,
+      "precision": 8.9,
+      "recall": 34.3,
+      "f1": 14.1
+    },
+    "graphite": {
+      "tp": 12,
+      "fp": 0,
+      "fn": 161,
+      "prs": 50,
+      "precision": 100.0,
+      "recall": 6.9,
+      "f1": 13.0
+    },
+    "linearb": {
+      "tp": 4,
+      "fp": 4,
+      "fn": 133,
+      "prs": 50,
+      "precision": 50.0,
+      "recall": 2.9,
+      "f1": 5.5
+    },
+    "bito": {
+      "tp": 0,
+      "fp": 0,
+      "fn": 137,
+      "prs": 50,
+      "precision": 0.0,
+      "recall": 0.0,
+      "f1": 0.0
+    }
+  },
+  "Sonnet 4.5": {
+    "cubic-v2": {
+      "tp": 99,
+      "fp": 74,
+      "fn": 74,
+      "prs": 50,
+      "precision": 57.2,
+      "recall": 57.2,
+      "f1": 57.2
+    },
+    "augment": {
+      "tp": 102,
+      "fp": 88,
+      "fn": 71,
+      "prs": 50,
+      "precision": 53.7,
+      "recall": 59.0,
+      "f1": 56.2
+    },
+    "qodo-extended-v2": {
+      "tp": 92,
+      "fp": 70,
+      "fn": 81,
+      "prs": 50,
+      "precision": 56.8,
+      "recall": 53.2,
+      "f1": 54.9
+    },
+    "devin": {
+      "tp": 69,
+      "fp": 32,
+      "fn": 104,
+      "prs": 50,
+      "precision": 68.3,
+      "recall": 39.9,
+      "f1": 50.4
+    },
+    "qodo-v2": {
+      "tp": 92,
+      "fp": 100,
+      "fn": 81,
+      "prs": 50,
+      "precision": 47.9,
+      "recall": 53.2,
+      "f1": 50.4
+    },
+    "qodo-extended-summary": {
+      "tp": 92,
+      "fp": 138,
+      "fn": 45,
+      "prs": 50,
+      "precision": 40.0,
+      "recall": 67.2,
+      "f1": 50.1
+    },
+    "gitlab": {
+      "tp": 83,
+      "fp": 84,
+      "fn": 90,
+      "prs": 50,
+      "precision": 49.7,
+      "recall": 48.0,
+      "f1": 48.8
+    },
+    "greptile-v4-1": {
+      "tp": 83,
+      "fp": 86,
+      "fn": 90,
+      "prs": 50,
+      "precision": 49.1,
+      "recall": 48.0,
+      "f1": 48.5
+    },
+    "bugbot": {
+      "tp": 73,
+      "fp": 59,
+      "fn": 100,
+      "prs": 50,
+      "precision": 55.3,
+      "recall": 42.2,
+      "f1": 47.9
+    },
+    "mergemonkey": {
+      "tp": 71,
+      "fp": 89,
+      "fn": 66,
+      "prs": 50,
+      "precision": 44.4,
+      "recall": 51.8,
+      "f1": 47.8
+    },
+    "propel-v2": {
+      "tp": 82,
+      "fp": 91,
+      "fn": 91,
+      "prs": 50,
+      "precision": 47.4,
+      "recall": 47.4,
+      "f1": 47.4
+    },
+    "qodo-v22": {
+      "tp": 72,
+      "fp": 99,
+      "fn": 65,
+      "prs": 50,
+      "precision": 42.1,
+      "recall": 52.6,
+      "f1": 46.8
+    },
+    "macroscope": {
+      "tp": 70,
+      "fp": 62,
+      "fn": 103,
+      "prs": 50,
+      "precision": 53.0,
+      "recall": 40.5,
+      "f1": 45.9
+    },
+    "gitar": {
+      "tp": 63,
+      "fp": 77,
+      "fn": 74,
+      "prs": 50,
+      "precision": 45.0,
+      "recall": 46.0,
+      "f1": 45.5
+    },
+    "copilot-v2": {
+      "tp": 106,
+      "fp": 188,
+      "fn": 67,
+      "prs": 50,
+      "precision": 36.1,
+      "recall": 61.3,
+      "f1": 45.4
+    },
+    "gemini-v2": {
+      "tp": 87,
+      "fp": 124,
+      "fn": 86,
+      "prs": 50,
+      "precision": 41.2,
+      "recall": 50.3,
+      "f1": 45.3
+    },
+    "qodo-extended": {
+      "tp": 84,
+      "fp": 154,
+      "fn": 53,
+      "prs": 50,
+      "precision": 35.3,
+      "recall": 61.3,
+      "f1": 44.8
+    },
+    "coderabbit": {
+      "tp": 98,
+      "fp": 180,
+      "fn": 75,
+      "prs": 50,
+      "precision": 35.3,
+      "recall": 56.6,
+      "f1": 43.5
+    },
+    "propel": {
+      "tp": 50,
+      "fp": 45,
+      "fn": 87,
+      "prs": 50,
+      "precision": 52.6,
+      "recall": 36.5,
+      "f1": 43.1
+    },
+    "kodus-v2": {
+      "tp": 59,
+      "fp": 43,
+      "fn": 114,
+      "prs": 50,
+      "precision": 57.8,
+      "recall": 34.1,
+      "f1": 42.9
+    },
+    "sourcery": {
+      "tp": 83,
+      "fp": 131,
+      "fn": 90,
+      "prs": 50,
+      "precision": 38.8,
+      "recall": 48.0,
+      "f1": 42.9
+    },
+    "cubic-dev": {
+      "tp": 105,
+      "fp": 255,
+      "fn": 32,
+      "prs": 50,
+      "precision": 29.2,
+      "recall": 76.6,
+      "f1": 42.3
+    },
+    "baz": {
+      "tp": 58,
+      "fp": 44,
+      "fn": 115,
+      "prs": 50,
+      "precision": 56.9,
+      "recall": 33.5,
+      "f1": 42.2
+    },
+    "qodo-v2-2": {
+      "tp": 56,
+      "fp": 74,
+      "fn": 81,
+      "prs": 50,
+      "precision": 43.1,
+      "recall": 40.9,
+      "f1": 41.9
+    },
+    "greptile": {
+      "tp": 55,
+      "fp": 71,
+      "fn": 82,
+      "prs": 50,
+      "precision": 43.7,
+      "recall": 40.1,
+      "f1": 41.8
+    },
+    "greptile-v4": {
+      "tp": 81,
+      "fp": 179,
+      "fn": 56,
+      "prs": 50,
+      "precision": 31.2,
+      "recall": 59.1,
+      "f1": 40.8
+    },
+    "claude-code": {
+      "tp": 70,
+      "fp": 113,
+      "fn": 103,
+      "prs": 50,
+      "precision": 38.3,
+      "recall": 40.5,
+      "f1": 39.3
+    },
+    "greptile-v5": {
+      "tp": 73,
+      "fp": 130,
+      "fn": 100,
+      "prs": 50,
+      "precision": 36.0,
+      "recall": 42.2,
+      "f1": 38.8
+    },
+    "claude": {
+      "tp": 63,
+      "fp": 92,
+      "fn": 110,
+      "prs": 50,
+      "precision": 40.6,
+      "recall": 36.4,
+      "f1": 38.4
+    },
+    "copilot": {
+      "tp": 70,
+      "fp": 187,
+      "fn": 67,
+      "prs": 50,
+      "precision": 27.2,
+      "recall": 51.1,
+      "f1": 35.5
+    },
+    "qodo": {
+      "tp": 62,
+      "fp": 160,
+      "fn": 75,
+      "prs": 50,
+      "precision": 27.9,
+      "recall": 45.3,
+      "f1": 34.5
+    },
+    "codeant-v2": {
+      "tp": 57,
+      "fp": 115,
+      "fn": 116,
+      "prs": 50,
+      "precision": 33.1,
+      "recall": 32.9,
+      "f1": 33.0
+    },
+    "gemini": {
+      "tp": 49,
+      "fp": 116,
+      "fn": 88,
+      "prs": 50,
+      "precision": 29.7,
+      "recall": 35.8,
+      "f1": 32.5
+    },
+    "kodus": {
+      "tp": 61,
+      "fp": 218,
+      "fn": 76,
+      "prs": 50,
+      "precision": 21.9,
+      "recall": 44.5,
+      "f1": 29.3
+    },
+    "mra-b": {
+      "tp": 56,
+      "fp": 198,
+      "fn": 81,
+      "prs": 50,
+      "precision": 22.0,
+      "recall": 40.9,
+      "f1": 28.6
+    },
+    "mra-claude": {
+      "tp": 63,
+      "fp": 208,
+      "fn": 110,
+      "prs": 50,
+      "precision": 23.2,
+      "recall": 36.4,
+      "f1": 28.4
+    },
+    "mra-mix": {
+      "tp": 58,
+      "fp": 198,
+      "fn": 115,
+      "prs": 50,
+      "precision": 22.7,
+      "recall": 33.5,
+      "f1": 27.0
+    },
+    "mra-openai": {
+      "tp": 60,
+      "fp": 214,
+      "fn": 113,
+      "prs": 50,
+      "precision": 21.9,
+      "recall": 34.7,
+      "f1": 26.8
+    },
+    "mra-a": {
+      "tp": 57,
+      "fp": 245,
+      "fn": 78,
+      "prs": 49,
+      "precision": 18.9,
+      "recall": 42.2,
+      "f1": 26.1
+    },
+    "mesa": {
+      "tp": 64,
+      "fp": 300,
+      "fn": 73,
+      "prs": 50,
+      "precision": 17.6,
+      "recall": 46.7,
+      "f1": 25.5
+    },
+    "entelligence": {
+      "tp": 29,
+      "fp": 70,
+      "fn": 108,
+      "prs": 50,
+      "precision": 29.3,
+      "recall": 21.2,
+      "f1": 24.6
+    },
+    "mra-ultra": {
+      "tp": 53,
+      "fp": 257,
+      "fn": 84,
+      "prs": 50,
+      "precision": 17.1,
+      "recall": 38.7,
+      "f1": 23.7
+    },
+    "codeant": {
+      "tp": 69,
+      "fp": 445,
+      "fn": 68,
+      "prs": 50,
+      "precision": 13.4,
+      "recall": 50.4,
+      "f1": 21.2
+    },
+    "kg": {
+      "tp": 23,
+      "fp": 22,
+      "fn": 150,
+      "prs": 50,
+      "precision": 51.1,
+      "recall": 13.3,
+      "f1": 21.1
+    },
+    "mra-max": {
+      "tp": 49,
+      "fp": 465,
+      "fn": 88,
+      "prs": 50,
+      "precision": 9.5,
+      "recall": 35.8,
+      "f1": 15.1
+    },
+    "mra-nano": {
+      "tp": 35,
+      "fp": 301,
+      "fn": 102,
+      "prs": 50,
+      "precision": 10.4,
+      "recall": 25.5,
+      "f1": 14.8
+    },
+    "graphite": {
+      "tp": 12,
+      "fp": 0,
+      "fn": 161,
+      "prs": 50,
+      "precision": 100.0,
+      "recall": 6.9,
+      "f1": 13.0
+    },
+    "linearb": {
+      "tp": 4,
+      "fp": 6,
+      "fn": 133,
+      "prs": 50,
+      "precision": 40.0,
+      "recall": 2.9,
+      "f1": 5.4
+    },
+    "bito": {
+      "tp": 0,
+      "fp": 0,
+      "fn": 137,
+      "prs": 50,
+      "precision": 0.0,
+      "recall": 0.0,
+      "f1": 0.0
+    }
+  },
+  "GPT-5.2": {
+    "cubic-v2": {
+      "tp": 100,
+      "fp": 73,
+      "fn": 73,
+      "prs": 50,
+      "precision": 57.8,
+      "recall": 57.8,
+      "f1": 57.8
+    },
+    "qodo-extended-v2": {
+      "tp": 96,
+      "fp": 67,
+      "fn": 77,
+      "prs": 50,
+      "precision": 58.9,
+      "recall": 55.5,
+      "f1": 57.1
+    },
+    "augment": {
+      "tp": 101,
+      "fp": 98,
+      "fn": 72,
+      "prs": 50,
+      "precision": 50.8,
+      "recall": 58.4,
+      "f1": 54.3
+    },
+    "qodo-v2": {
+      "tp": 103,
+      "fp": 114,
+      "fn": 70,
+      "prs": 50,
+      "precision": 47.5,
+      "recall": 59.5,
+      "f1": 52.8
+    },
+    "qodo-extended-summary": {
+      "tp": 91,
+      "fp": 148,
+      "fn": 46,
+      "prs": 50,
+      "precision": 38.1,
+      "recall": 66.4,
+      "f1": 48.4
+    },
+    "bugbot": {
+      "tp": 75,
+      "fp": 67,
+      "fn": 98,
+      "prs": 50,
+      "precision": 52.8,
+      "recall": 43.4,
+      "f1": 47.6
+    },
+    "gitlab": {
+      "tp": 82,
+      "fp": 93,
+      "fn": 91,
+      "prs": 50,
+      "precision": 46.9,
+      "recall": 47.4,
+      "f1": 47.1
+    },
+    "devin": {
+      "tp": 67,
+      "fp": 46,
+      "fn": 106,
+      "prs": 50,
+      "precision": 59.3,
+      "recall": 38.7,
+      "f1": 46.9
+    },
+    "greptile-v4-1": {
+      "tp": 84,
+      "fp": 104,
+      "fn": 89,
+      "prs": 50,
+      "precision": 44.7,
+      "recall": 48.6,
+      "f1": 46.5
+    },
+    "gemini-v2": {
+      "tp": 89,
+      "fp": 132,
+      "fn": 84,
+      "prs": 50,
+      "precision": 40.3,
+      "recall": 51.4,
+      "f1": 45.2
+    },
+    "copilot-v2": {
+      "tp": 109,
+      "fp": 201,
+      "fn": 64,
+      "prs": 50,
+      "precision": 35.2,
+      "recall": 63.0,
+      "f1": 45.1
+    },
+    "qodo-v22": {
+      "tp": 73,
+      "fp": 117,
+      "fn": 64,
+      "prs": 50,
+      "precision": 38.4,
+      "recall": 53.3,
+      "f1": 44.6
+    },
+    "macroscope": {
+      "tp": 68,
+      "fp": 68,
+      "fn": 105,
+      "prs": 50,
+      "precision": 50.0,
+      "recall": 39.3,
+      "f1": 44.0
+    },
+    "mergemonkey": {
+      "tp": 69,
+      "fp": 113,
+      "fn": 68,
+      "prs": 50,
+      "precision": 37.9,
+      "recall": 50.4,
+      "f1": 43.3
+    },
+    "gitar": {
+      "tp": 62,
+      "fp": 88,
+      "fn": 75,
+      "prs": 50,
+      "precision": 41.3,
+      "recall": 45.3,
+      "f1": 43.2
+    },
+    "sourcery": {
+      "tp": 86,
+      "fp": 140,
+      "fn": 87,
+      "prs": 50,
+      "precision": 38.1,
+      "recall": 49.7,
+      "f1": 43.1
+    },
+    "qodo-v2-2": {
+      "tp": 59,
+      "fp": 83,
+      "fn": 78,
+      "prs": 50,
+      "precision": 41.5,
+      "recall": 43.1,
+      "f1": 42.3
+    },
+    "claude-code": {
+      "tp": 71,
+      "fp": 97,
+      "fn": 102,
+      "prs": 50,
+      "precision": 42.3,
+      "recall": 41.0,
+      "f1": 41.6
+    },
+    "qodo-extended": {
+      "tp": 82,
+      "fp": 179,
+      "fn": 55,
+      "prs": 50,
+      "precision": 31.4,
+      "recall": 59.9,
+      "f1": 41.2
+    },
+    "kodus-v2": {
+      "tp": 57,
+      "fp": 49,
+      "fn": 116,
+      "prs": 50,
+      "precision": 53.8,
+      "recall": 32.9,
+      "f1": 40.9
+    },
+    "propel-v2": {
+      "tp": 63,
+      "fp": 109,
+      "fn": 74,
+      "prs": 50,
+      "precision": 36.6,
+      "recall": 46.0,
+      "f1": 40.8
+    },
+    "coderabbit": {
+      "tp": 104,
+      "fp": 235,
+      "fn": 69,
+      "prs": 50,
+      "precision": 30.7,
+      "recall": 60.1,
+      "f1": 40.6
+    },
+    "propel": {
+      "tp": 50,
+      "fp": 61,
+      "fn": 87,
+      "prs": 50,
+      "precision": 45.0,
+      "recall": 36.5,
+      "f1": 40.3
+    },
+    "cubic-dev": {
+      "tp": 100,
+      "fp": 266,
+      "fn": 37,
+      "prs": 50,
+      "precision": 27.3,
+      "recall": 73.0,
+      "f1": 39.8
+    },
+    "greptile-v5": {
+      "tp": 76,
+      "fp": 137,
+      "fn": 97,
+      "prs": 50,
+      "precision": 35.7,
+      "recall": 43.9,
+      "f1": 39.4
+    },
+    "claude": {
+      "tp": 65,
+      "fp": 93,
+      "fn": 108,
+      "prs": 50,
+      "precision": 41.1,
+      "recall": 37.6,
+      "f1": 39.3
+    },
+    "greptile-v4": {
+      "tp": 80,
+      "fp": 193,
+      "fn": 57,
+      "prs": 50,
+      "precision": 29.3,
+      "recall": 58.4,
+      "f1": 39.0
+    },
+    "greptile": {
+      "tp": 52,
+      "fp": 87,
+      "fn": 85,
+      "prs": 50,
+      "precision": 37.4,
+      "recall": 38.0,
+      "f1": 37.7
+    },
+    "baz": {
+      "tp": 55,
+      "fp": 64,
+      "fn": 118,
+      "prs": 50,
+      "precision": 46.2,
+      "recall": 31.8,
+      "f1": 37.7
+    },
+    "copilot": {
+      "tp": 72,
+      "fp": 220,
+      "fn": 65,
+      "prs": 50,
+      "precision": 24.7,
+      "recall": 52.6,
+      "f1": 33.6
+    },
+    "qodo": {
+      "tp": 61,
+      "fp": 177,
+      "fn": 76,
+      "prs": 50,
+      "precision": 25.6,
+      "recall": 44.5,
+      "f1": 32.5
+    },
+    "codeant-v2": {
+      "tp": 58,
+      "fp": 128,
+      "fn": 115,
+      "prs": 50,
+      "precision": 31.2,
+      "recall": 33.5,
+      "f1": 32.3
+    },
+    "gemini": {
+      "tp": 46,
+      "fp": 129,
+      "fn": 91,
+      "prs": 50,
+      "precision": 26.3,
+      "recall": 33.6,
+      "f1": 29.5
+    },
+    "kodus": {
+      "tp": 59,
+      "fp": 222,
+      "fn": 78,
+      "prs": 50,
+      "precision": 21.0,
+      "recall": 43.1,
+      "f1": 28.2
+    },
+    "mra-mix": {
+      "tp": 57,
+      "fp": 197,
+      "fn": 116,
+      "prs": 50,
+      "precision": 22.4,
+      "recall": 32.9,
+      "f1": 26.7
+    },
+    "mra-b": {
+      "tp": 54,
+      "fp": 217,
+      "fn": 83,
+      "prs": 50,
+      "precision": 19.9,
+      "recall": 39.4,
+      "f1": 26.5
+    },
+    "mra-claude": {
+      "tp": 57,
+      "fp": 210,
+      "fn": 116,
+      "prs": 50,
+      "precision": 21.3,
+      "recall": 32.9,
+      "f1": 25.9
+    },
+    "mra-openai": {
+      "tp": 55,
+      "fp": 218,
+      "fn": 118,
+      "prs": 50,
+      "precision": 20.1,
+      "recall": 31.8,
+      "f1": 24.7
+    },
+    "mra-a": {
+      "tp": 54,
+      "fp": 253,
+      "fn": 81,
+      "prs": 49,
+      "precision": 17.6,
+      "recall": 40.0,
+      "f1": 24.4
+    },
+    "entelligence": {
+      "tp": 28,
+      "fp": 73,
+      "fn": 109,
+      "prs": 50,
+      "precision": 27.7,
+      "recall": 20.4,
+      "f1": 23.5
+    },
+    "kg": {
+      "tp": 25,
+      "fp": 20,
+      "fn": 148,
+      "prs": 50,
+      "precision": 55.6,
+      "recall": 14.5,
+      "f1": 22.9
+    },
+    "mesa": {
+      "tp": 58,
+      "fp": 315,
+      "fn": 79,
+      "prs": 50,
+      "precision": 15.5,
+      "recall": 42.3,
+      "f1": 22.7
+    },
+    "mra-ultra": {
+      "tp": 51,
+      "fp": 282,
+      "fn": 86,
+      "prs": 50,
+      "precision": 15.3,
+      "recall": 37.2,
+      "f1": 21.7
+    },
+    "codeant": {
+      "tp": 68,
+      "fp": 504,
+      "fn": 69,
+      "prs": 50,
+      "precision": 11.9,
+      "recall": 49.6,
+      "f1": 19.2
+    },
+    "mra-nano": {
+      "tp": 23,
+      "fp": 190,
+      "fn": 114,
+      "prs": 50,
+      "precision": 10.8,
+      "recall": 16.8,
+      "f1": 13.1
+    },
+    "mra-max": {
+      "tp": 43,
+      "fp": 515,
+      "fn": 94,
+      "prs": 50,
+      "precision": 7.7,
+      "recall": 31.4,
+      "f1": 12.4
+    },
+    "graphite": {
+      "tp": 11,
+      "fp": 4,
+      "fn": 162,
+      "prs": 50,
+      "precision": 73.3,
+      "recall": 6.4,
+      "f1": 11.7
+    },
+    "linearb": {
+      "tp": 4,
+      "fp": 6,
+      "fn": 133,
+      "prs": 50,
+      "precision": 40.0,
+      "recall": 2.9,
+      "f1": 5.4
+    },
+    "bito": {
+      "tp": 0,
+      "fp": 0,
+      "fn": 137,
+      "prs": 50,
+      "precision": 0.0,
+      "recall": 0.0,
+      "f1": 0.0
+    }
+  },
+  "Gemini 3.8 Flash": {
+    "fletcher-gemini-3.8-flash": {
+      "tp": 85,
+      "fp": 78,
+      "fn": 88,
+      "prs": 50,
+      "precision": 52.1,
+      "recall": 49.1,
+      "f1": 50.6
+    },
+    "coderabbit": {
+      "tp": 98,
+      "fp": 188,
+      "fn": 75,
+      "prs": 50,
+      "precision": 34.3,
+      "recall": 56.6,
+      "f1": 42.7
+    },
+    "greptile-v5": {
+      "tp": 64,
+      "fp": 108,
+      "fn": 90,
+      "prs": 46,
+      "precision": 37.2,
+      "recall": 41.6,
+      "f1": 39.3
+    }
+  }
+}
