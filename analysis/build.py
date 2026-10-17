@@ -2,10 +2,14 @@
 """Export Fletcher's benchmark results and draw the README charts.
 
 Reads a checkout of withmartian/code-review-benchmark in which the harness
-has added Fletcher's reviews and the Gemini judge has scored them, then
-writes data/ and charts/ in this repository. Standard library only.
+has added Fletcher's reviews and the Gemini judge has scored them, plus the
+JSON written by Martian's own dashboard script (the leaderboard's numbers:
+Core category profile, hidden tools removed). Writes data/ and charts/ in
+this repository. Standard library only.
 
-    python3 analysis/build.py --martian ~/Documents/Developer/code-review-benchmark
+    cd ~/path/to/code-review-benchmark/offline
+    uv run python analysis/benchmark_dashboard.py --output /tmp/dash.html
+    python3 analysis/build.py --martian ~/path/to/code-review-benchmark --dashboard /tmp/dash.json
 """
 
 import argparse
@@ -43,6 +47,7 @@ NAMES = {
     "gitar": "Gitar",
     "copilot-v2": "Copilot v2",
     "gemini-v2": "Gemini v2",
+    "graphite": "Graphite",
     "coderabbit": "CodeRabbit",
 }
 
@@ -104,6 +109,38 @@ def text(x, y, words, size=13, fill=INK, weight=400, anchor="start"):
         f"<text x='{x:.1f}' y='{y:.1f}' font-size='{size}' fill='{fill}' font-weight='{weight}' "
         f"text-anchor='{anchor}'>{esc(words)}</text>"
     )
+
+
+LEADERBOARD_JUDGE = "anthropic_claude-opus-4-5-20251101"
+
+
+def leaderboard_chart(board, fletcher, names):
+    """The leaderboard's default view: Core profile, F2, Opus 4.5 judge."""
+    rows = sorted([(t, v) for t, v in board.items()] + [(TOOL, fletcher)], key=lambda x: -x[1]["f2"])
+    rank = 1 + sum(1 for _, v in board.items() if v["f2"] > fletcher["f2"])
+    title = f"On the leaderboard's default view, Fletcher's {fletcher['f2']:.1f}% F2 places {ordinal(rank)} of {len(rows)}"
+    x0, scale, y0, step = 230, 7, 96, 26
+    X = lambda v: x0 + v * scale
+    y_end = y0 + (len(rows) - 1) * step + 18
+    out = [text(24, 34, title, 17, INK, 600)]
+    out.append(text(24, 56, "F2 (%), Core categories, on all 50 PRs: the 21 tools Martian's leaderboard shows, plus Fletcher", 12, QUIET))
+    for v in range(0, 80, 10):
+        out.append(f"<line x1='{X(v)}' x2='{X(v)}' y1='78' y2='{y_end}' stroke='{GRID}'/>")
+        out.append(text(X(v), y_end + 18, v, 12, QUIET, anchor="middle"))
+    out.append(f"<line x1='{X(0)}' x2='{X(70)}' y1='{y_end}' y2='{y_end}' stroke='{AXIS}'/>")
+    for i, (tool, v) in enumerate(rows):
+        y = y0 + i * step
+        mine = tool == TOOL
+        out.append(f"<rect x='{X(0)}' y='{y - 8}' width='{X(v['f2']) - X(0)}' height='16' rx='3' fill='{ACCENT if mine else MUTED}'/>")
+        out.append(text(x0 - 10, y + 4.5, NAMES[TOOL] if mine else names.get(tool, name(tool)), 13, INK, 600 if mine else 400, "end"))
+        end = v["f2"] + JUDGE_ERROR if mine else v["f2"]
+        if mine:
+            lo, hi = X(v["f2"] - JUDGE_ERROR), X(v["f2"] + JUDGE_ERROR)
+            out.append(f"<path d='M{lo} {y}H{hi}M{lo} {y - 6}V{y + 6}M{hi} {y - 6}V{y + 6}' stroke='{INK}' stroke-width='1.25' fill='none'/>")
+        out.append(text(X(end) + 7, y + 4.5, f"{v['f2']:.1f}", 12, INK if mine else QUIET, 600 if mine else 400))
+    out.append(text(24, y_end + 46, "Others judged by Claude Opus 4.5, the leaderboard's default judge. Fletcher judged by Gemini 3.8 Flash, which scored", 12, QUIET))
+    out.append(text(24, y_end + 64, f"CodeRabbit about 2.5 points below Opus on this metric. Whisker: ±{JUDGE_ERROR:.0f} points, the spread between Martian's judges.", 12, QUIET))
+    return svg(760, y_end + 86, title, "".join(out))
 
 
 def ranking_chart(sonnet, fletcher):
@@ -170,16 +207,15 @@ def calibration_chart(by_judge):
     return svg(760, y_end + 68, title, "".join(out))
 
 
-def scatter_chart(sonnet, fletcher):
-    full = {t: s for t, s in sonnet.items() if s["prs"] >= 49}
+def scatter_chart(full, fletcher, names):
     title = "Fletcher finds about half the issues, and about half its findings are real"
     lo = min(10, int(min(min(s["recall"], s["precision"]) for s in full.values()) // 10 * 10))
-    hi = 80
+    hi = 100 if max(max(s["recall"], s["precision"]) for s in full.values()) > 80 else 80
     x0, x1, y_top, y_bot = 70, 724, 76, 476
     X = lambda r: x0 + (r - lo) / (hi - lo) * (x1 - x0)
     Y = lambda p: y_bot - (p - lo) / (hi - lo) * (y_bot - y_top)
     out = [text(24, 34, title, 17, INK, 600)]
-    out.append(text(24, 56, "Precision vs recall (%) on all 50 PRs; grey = 49 tools under the Sonnet 4.5 judge", 12, QUIET))
+    out.append(text(24, 56, f"Precision vs recall (%), Core categories, all 50 PRs; grey = the {len(full)} leaderboard tools under the Opus 4.5 judge", 12, QUIET))
     for v in range(lo, hi + 1, 10):
         out.append(f"<line x1='{X(v):.1f}' x2='{X(v):.1f}' y1='{y_top}' y2='{y_bot}' stroke='{GRID}'/>")
         out.append(f"<line x1='{x0}' x2='{x1}' y1='{Y(v):.1f}' y2='{Y(v):.1f}' stroke='{GRID}'/>")
@@ -190,10 +226,11 @@ def scatter_chart(sonnet, fletcher):
     for tool, s in full.items():
         out.append(f"<circle cx='{X(s['recall']):.1f}' cy='{Y(s['precision']):.1f}' r='5' fill='{MUTED}' stroke='{SURFACE}' stroke-width='2'/>")
     labels = {"devin": (8, -6, "start"), "copilot-v2": (8, 12, "start"), "cubic-v2": (8, -8, "start"),
-              "augment": (8, 14, "start"), "coderabbit": (-8, 14, "end")}
+              "augment": (8, 14, "start"), "coderabbit": (-8, 14, "end"), "graphite": (-8, 4, "end")}
     for tool, (dx, dy, anchor) in labels.items():
-        s = full[tool]
-        out.append(text(X(s["recall"]) + dx, Y(s["precision"]) + dy, name(tool), 12, QUIET, anchor=anchor))
+        if tool in full:
+            s = full[tool]
+            out.append(text(X(s["recall"]) + dx, Y(s["precision"]) + dy, names.get(tool, name(tool)), 12, QUIET, anchor=anchor))
     fx, fy = X(fletcher["recall"]), Y(fletcher["precision"])
     out.append(f"<circle cx='{fx:.1f}' cy='{fy:.1f}' r='7' fill='{ACCENT}' stroke='{SURFACE}' stroke-width='2'/>")
     out.append(text(fx - 12, fy + 4.5, "Fletcher", 13, INK, 600, "end"))
@@ -219,6 +256,7 @@ def ordinal(n):
 def main():
     parser = argparse.ArgumentParser(description=__doc__.splitlines()[0])
     parser.add_argument("--martian", required=True, type=Path, help="code-review-benchmark checkout")
+    parser.add_argument("--dashboard", required=True, type=Path, help="JSON from Martian's benchmark_dashboard.py")
     args = parser.parse_args()
     results = args.martian.expanduser() / "offline" / "results"
 
@@ -254,9 +292,28 @@ def main():
             w.writerow([url, e["total_golden"], e["tp"], e["fn"], e["fp"], round(e["precision"], 3), round(e["recall"], 3),
                         meta["input_tokens"], meta["output_tokens"], round(meta["cost_usd"], 4)])
 
-    (charts / "ranking.svg").write_text(ranking_chart(sonnet, fletcher))
+    dashboard = json.loads(args.dashboard.expanduser().read_text())
+    names = dashboard.get("tool_display_names", {})
+    core = {
+        JUDGES[j]: {t: v["core"] for t, v in m["overall_metrics"].items() if v["core"]["num_prs"] >= 49}
+        for j, m in dashboard["models"].items()
+    }
+    fletcher_core = core[JUDGES[GEMINI]].pop(TOOL)
+    board = {t: v for t, v in core[JUDGES[LEADERBOARD_JUDGE]].items()}
+    (data / "leaderboard-core.json").write_text(json.dumps({
+        "about": "Martian's dashboard numbers: Core category profile, hidden tools removed, micro-averaged over 50 PRs.",
+        "fletcher_gemini_judge": fletcher_core,
+        "by_judge": {j: dict(sorted(v.items(), key=lambda x: -x[1]["f2"])) for j, v in core.items()},
+    }, indent=2) + "\n")
+
+    (charts / "ranking.svg").write_text(leaderboard_chart(board, fletcher_core, names))
+    (charts / "ranking-f1-all-tools.svg").write_text(ranking_chart(sonnet, fletcher))
     (charts / "judge-calibration.svg").write_text(calibration_chart(by_judge))
-    (charts / "precision-recall.svg").write_text(scatter_chart(sonnet, fletcher))
+    (charts / "precision-recall.svg").write_text(scatter_chart(board, fletcher_core, names))
+    for judge in (LEADERBOARD_JUDGE, "anthropic_claude-sonnet-4-5-20250929", "openai_gpt-5.2"):
+        b = core[JUDGES[judge]]
+        for key in ("f2", "f1"):
+            print(f"{JUDGES[judge]:>11} {key}: rank {1 + sum(1 for v in b.values() if v[key] > fletcher_core[key])} of {len(b) + 1}")
 
     cost = sum(r["fletcher"]["fletcher"]["cost_usd"] for r in reviews.values())
     print(f"Fletcher: F1 {fletcher['f1']}%, precision {fletcher['precision']}%, recall {fletcher['recall']}% "
