@@ -54,8 +54,10 @@ pnpm --filter @not-quite-my-tempo/api bench:review --bench-dir $BENCH
 The tool is named `fletcher-<model>` (for example
 `fletcher-gemini-3.8-flash`). Use `--model gemini-4-argon` for the pro model,
 `--no-context` to measure what repository context is worth, `--tool` to name
-a variant, and `--force` to review again. Each review prints its cost;
-failures are listed at the end, and rerunning retries only those.
+a variant, `--force` to review again, `--only <url>` for a single pull
+request, and `--timeout <seconds>` to override production's 7-minute model
+timeout. Each review prints its cost; failures are listed at the end, and
+rerunning retries only those.
 
 Then judge. Start the proxy in one terminal (Ctrl-C prints the judge's
 bill):

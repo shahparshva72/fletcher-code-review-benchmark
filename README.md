@@ -1,41 +1,44 @@
 # Fletcher on Martian's code review benchmark
 
-[Fletcher](https://github.com/shahparshva72/not-quite-my-tempo), an AI pull request reviewer, scored **50.6% F2 (50.6% precision, 50.6% recall)** on all 50 PRs of [Martian's offline code review benchmark](https://github.com/withmartian/code-review-benchmark), measured the way the [leaderboard](https://codereview.withmartian.com/?mode=offline&ob=2) measures it by default (Core categories, F2). Against the 21 tools the leaderboard shows, that places **12th of 22 under its default judge (Claude Opus 4.5)** and **7th under Claude Sonnet 4.5**.
+[Fletcher](https://github.com/shahparshva72/not-quite-my-tempo), an AI pull request reviewer, was run on all 50 PRs of [Martian's offline code review benchmark](https://github.com/withmartian/code-review-benchmark) with two models. It was scored the way the [leaderboard](https://codereview.withmartian.com/?mode=offline&ob=2) scores by default (Core categories, F2) and placed against the 21 tools the leaderboard shows:
 
-Fletcher ran on `gemini-3.8-flash`, a flash-tier model. The full run cost **$4.25** for the reviews and **about $0.33** to judge them, all on Vertex AI. It ran on 17 October 2026 against Martian commit `e616e84`, and the leaderboard numbers come from Martian's own `analysis/benchmark_dashboard.py`.
+| Model | F2 | Rank under Claude Opus 4.5 (leaderboard default) | Rank under Claude Sonnet 4.5 | Review cost, 50 PRs |
+| --- | --- | --- | --- | --- |
+| `gemini-4-argon` (pro tier) | **57.2%** | **6th of 22** | 3rd of 22 | $9.61 (about $0.19 per PR) |
+| `gemini-3.8-flash` (flash tier) | **50.6%** | **12th of 22** | 7th of 22 | $4.25 (about $0.085 per PR) |
 
-![On the leaderboard's default view, Fletcher places 12th of 22](charts/ranking.svg)
+Both ran on Vertex AI on 17 October 2026 against Martian commit `e616e84`, with the same prompt and production review path; only the model changed. Judging cost about $0.85 for both runs. The leaderboard numbers come from Martian's own `analysis/benchmark_dashboard.py`.
+
+![Fletcher on Gemini 4 Argon places 6th of 22](charts/ranking-argon.svg)
+
+![Fletcher on Gemini 3.8 Flash places 12th of 22](charts/ranking-flash.svg)
 
 ## Results
 
 Martian's leaderboard scores with **F2**, which counts recall as twice as important as precision, because a missed bug costs more than a false alarm. It also uses the **Core** profile by default, which leaves out golden comments about style and speculation.
 
-| Profile | Precision | Recall | F1 | F2 |
+| Model | Profile | Precision | Recall | F1 | F2 |
+| --- | --- | --- | --- | --- | --- |
+| Gemini 4 Argon | **Core** (leaderboard default) | 43.8% (98 of 224) | 62.0% (98 of 158) | 51.3% | **57.2%** |
+| Gemini 4 Argon | All categories | 45.5% (105 of 231) | 60.7% (105 of 173) | 52.0% | 56.9% |
+| Gemini 3.8 Flash | **Core** (leaderboard default) | 50.6% (80 of 158) | 50.6% (80 of 158) | 50.6% | **50.6%** |
+| Gemini 3.8 Flash | All categories | 52.1% (85 of 163) | 49.1% (85 of 173) | 50.6% | 49.7% |
+
+Where each Core score would place among the 21 leaderboard tools, under each of Martian's judges:
+
+| Judge | Argon, F2 | Argon, F1 | Flash, F2 | Flash, F1 |
 | --- | --- | --- | --- | --- |
-| **Core** (leaderboard default) | 50.6% (80 of 158) | 50.6% (80 of 158) | 50.6% | **50.6%** |
-| All categories | 52.1% (85 of 163) | 49.1% (85 of 173) | 50.6% | 49.7% |
+| Claude Opus 4.5 (leaderboard default) | 6th of 22 | 9th of 22 | 12th of 22 | 10th of 22 |
+| Claude Sonnet 4.5 | 3rd of 22 | 5th of 22 | 7th of 22 | 6th of 22 |
+| GPT-5.2 | 5th of 22 | 5th of 22 | 6th of 22 | 5th of 22 |
 
-Where Fletcher's Core score would place among the 21 leaderboard tools, under each of Martian's judges:
+Both runs were judged by Gemini 3.8 Flash, which on this metric scored CodeRabbit about 2.5 points below Opus and Sonnet (48.5% vs 51.1% and 50.9%). If that holds for Fletcher too, these ranks understate it slightly.
 
-| Judge | Rank on F2 | Rank on F1 |
-| --- | --- | --- |
-| Claude Opus 4.5 (leaderboard default) | 12th of 22 | 10th of 22 |
-| Claude Sonnet 4.5 | 7th of 22 | 6th of 22 |
-| GPT-5.2 | 6th of 22 | 5th of 22 |
+Argon's gain comes from recall: it finds 18 more of the 158 Core issues than Flash, but adds 48 more findings that aren't in the golden set, so fewer than half its findings are real. Flash's precision and recall are equal; its prompt asks for "a few high-signal findings over volume", which F1 rewards and F2 does not. On plain F1 over all categories and all 49 tools in Martian's data, hidden versions included, either model would rank 4th ([chart](charts/ranking-f1-all-tools.svg)).
 
-Fletcher was judged by Gemini 3.8 Flash, which on this metric scored CodeRabbit about 2.5 points below Opus and Sonnet (48.5% vs 51.1% and 50.9%). If that holds for Fletcher too, these ranks understate it slightly.
+![Precision vs recall for the 21 leaderboard tools and both Fletcher runs](charts/precision-recall.svg)
 
-| | Fletcher |
-| --- | --- |
-| PRs reviewed | 50 of 50 |
-| Review cost | $4.25 (about $0.085 per PR) |
-| Judge cost | about $0.33 |
-
-Fletcher's precision and recall are equal. The top four tools beat it on both; most of the others above it on F2 find more issues at the cost of more noise. Its prompt asks for "a few high-signal findings over volume", which F1 rewards and F2 does not. On plain F1 over all categories and all 49 tools in Martian's data, hidden versions included, it would rank 4th ([chart](charts/ranking-f1-all-tools.svg)).
-
-![Precision vs recall for the 21 leaderboard tools and Fletcher](charts/precision-recall.svg)
-
-Per-PR numbers are in [`data/fletcher-per-pr.csv`](data/fletcher-per-pr.csv). Every review Fletcher wrote, with the golden comments and the judge's reasoning for each match, is in [`data/fletcher-reviews.json`](data/fletcher-reviews.json).
+Per-PR numbers for both models are in [`data/fletcher-per-pr.csv`](data/fletcher-per-pr.csv). Every review Fletcher wrote, with the golden comments and the judge's reasoning for each match, is in [`data/fletcher-reviews.json`](data/fletcher-reviews.json), keyed by PR and then by tool (`fletcher-gemini-4-argon`, `fletcher-gemini-3.8-flash`).
 
 ## Is the comparison fair?
 
@@ -43,7 +46,7 @@ Mostly, within about ±5 points. Martian's published scores were judged by Claud
 
 ![Judges move F1 by about 5 points; Gemini lands within 1.5 of Sonnet](charts/judge-calibration.svg)
 
-Gemini scored CodeRabbit 0.8 points and Greptile v5 1.5 points below Sonnet 4.5. Martian's own three judges disagree with each other by about 5 points on the same tool. So Fletcher's score carries a ±5-point error bar against the leaderboard. Under the identical Gemini judge, Fletcher (50.6%) beats CodeRabbit (42.7%) and Greptile v5 (39.3%) outright. All-category scores for every tool under all four judges are in [`data/scores-by-judge.json`](data/scores-by-judge.json), and the leaderboard's Core-profile numbers in [`data/leaderboard-core.json`](data/leaderboard-core.json).
+Gemini scored CodeRabbit 0.8 points and Greptile v5 1.5 points below Sonnet 4.5. Martian's own three judges disagree with each other by about 5 points on the same tool. So Fletcher's score carries a ±5-point error bar against the leaderboard. Under the identical Gemini judge, Fletcher on Flash (50.6% F1) and on Argon (52.0%) both beat CodeRabbit (42.7%) and Greptile v5 (39.3%) outright. All-category scores for every tool under all four judges are in [`data/scores-by-judge.json`](data/scores-by-judge.json), and the leaderboard's Core-profile numbers in [`data/leaderboard-core.json`](data/leaderboard-core.json).
 
 ## How it was run
 
@@ -66,12 +69,12 @@ python3 analysis/build.py --martian ~/path/to/code-review-benchmark --dashboard 
 
 ## Caveats
 
-- **Different judge.** See above: treat the score as ±5 points, which under the default Opus judge spans roughly 6th to 15th of 22.
+- **Different judge.** See above: treat each score as ±5 points. Under the default Opus judge that spans roughly 4th to 8th of 22 for Argon and 6th to 14th for Flash.
 - **Self-preference.** A Gemini judge scoring a Gemini-written review may favour it a little. The calibration check covers this only partly.
 - **Incomplete golden set.** Some findings counted as false positives look like real bugs the human reviewers didn't list. That lowers precision for every tool alike.
 - **Training leakage.** The PRs are public, so models may have seen them or their fixes.
-- **One run.** Reviews and judging were each run once, so run-to-run variance is unknown.
-- **Timeouts.** 3 of 50 reviews failed on the first pass. One PR (keycloak#38446) exceeded Fletcher's production 180-second timeout twice and was reviewed with a 360-second limit, so in production that PR would likely get no review.
+- **One run per model.** Reviews and judging were each run once per model, so run-to-run variance is unknown, and part of the gap between the two models may be noise.
+- **Timeouts.** In the Flash run, 3 of 50 reviews failed on the first pass, and one PR (keycloak#38446) exceeded Fletcher's then 180-second timeout twice and was reviewed with a 360-second limit. Production now allows 420 seconds, which the Argon run used; all 50 Argon reviews passed first time.
 
 ## What Fletcher missed
 

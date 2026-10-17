@@ -1329,6 +1329,15 @@
     }
   },
   "Gemini 3.8 Flash": {
+    "fletcher-gemini-4-argon": {
+      "tp": 105,
+      "fp": 126,
+      "fn": 68,
+      "prs": 50,
+      "precision": 45.5,
+      "recall": 60.7,
+      "f1": 52.0
+    },
     "fletcher-gemini-3.8-flash": {
       "tp": 85,
       "fp": 78,

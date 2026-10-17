@@ -37,6 +37,8 @@ import type {
 } from "@not-quite-my-tempo/reviewer";
 
 import { fetchRepositoryContext } from "../../src/application/repository-context.js";
+import { withVertexProject } from "../../src/application/review-keys.js";
+import type { ResolvedReviewKey } from "../../src/application/review-keys.js";
 import {
   buildFindingCommentBody,
   buildReviewSummaryBody,
@@ -114,9 +116,10 @@ const usage = `Usage: pnpm --filter @not-quite-my-tempo/api bench:review \\
   --model <id>        Catalog model to review with (default gemini-3.8-flash)
   --tool <name>       Tool name in benchmark_data.json (default fletcher-<model>)
   --per-repo <n>      Only the first n pull requests of each of the 5 repos
+  --only <url>        Only this pull request (its key in benchmark_data.json)
   --limit <n>         At most n pull requests in total
   --concurrency <n>   Reviews in flight at once (default 2)
-  --timeout <s>       Seconds per model call (default: production's 180)
+  --timeout <s>       Seconds per model call (default: production's 420)
   --no-context        Review the diff alone, without repository context
   --force             Re-review pull requests this tool already reviewed
   --dry-run           Fetch and build every prompt, print the estimated
@@ -131,6 +134,7 @@ const { values: args } = parseArgs({
     model: { type: "string", default: "gemini-3.8-flash" },
     tool: { type: "string" },
     "per-repo": { type: "string" },
+    only: { type: "string" },
     limit: { type: "string" },
     concurrency: { type: "string", default: "2" },
     timeout: { type: "string" },
@@ -234,6 +238,10 @@ const selectEntries = (data: BenchmarkData) => {
   const selected: [string, BenchmarkEntry][] = [];
 
   for (const [goldenUrl, entry] of Object.entries(data)) {
+    if (args.only !== undefined && goldenUrl !== args.only) {
+      continue;
+    }
+
     const repo = entry.golden_source_file;
     const seen = perRepoCounts.get(repo) ?? 0;
 
@@ -536,23 +544,35 @@ const program = Effect.gen(function* () {
   return yield* runReviews(data, selected);
 });
 
-const reviewerConfig: ReviewerConfig = {
-  provider: "vertex_express",
-  apiKey: vertexApiKey,
-  model: modelId,
-};
-
-const MainLive = Layer.merge(
-  GitHubPullRequestClientLive({}),
-  ReviewerLive(
-    Option.match(timeoutSeconds, {
-      onNone: (): ReviewerConfig => reviewerConfig,
-      onSome: (seconds): ReviewerConfig => ({
-        ...reviewerConfig,
-        timeoutMillis: seconds * 1_000,
-      }),
-    }),
+// The same project lookup production does, so models served only from
+// Vertex AI's global location (Gemini 4 Argon) work here too.
+const ReviewerFromKey = Layer.unwrapEffect(
+  (dryRun
+    ? Effect.succeed<ResolvedReviewKey>({
+        apiKey: vertexApiKey,
+        provider: "vertex_express",
+        model: modelId,
+      })
+    : withVertexProject({
+        apiKey: vertexApiKey,
+        provider: "vertex_express",
+        model: modelId,
+      })
+  ).pipe(
+    Effect.map((key) =>
+      ReviewerLive(
+        Option.match(timeoutSeconds, {
+          onNone: (): ReviewerConfig => key,
+          onSome: (seconds): ReviewerConfig => ({
+            ...key,
+            timeoutMillis: seconds * 1_000,
+          }),
+        }),
+      ),
+    ),
   ),
 );
+
+const MainLive = Layer.merge(GitHubPullRequestClientLive({}), ReviewerFromKey);
 
 await Effect.runPromise(program.pipe(Effect.provide(MainLive)));

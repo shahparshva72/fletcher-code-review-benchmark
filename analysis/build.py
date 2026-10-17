@@ -18,8 +18,15 @@ import json
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parent.parent
-TOOL = "fletcher-gemini-3.8-flash"
 GEMINI = "gemini-3.8-flash"
+
+# Each model Fletcher ran on: tool name in Martian's data -> (chart file
+# suffix, short label). Both were judged by Gemini 3.8 Flash.
+FLETCHERS = {
+    "fletcher-gemini-3.8-flash": ("flash", "Gemini 3.8 Flash"),
+    "fletcher-gemini-4-argon": ("argon", "Gemini 4 Argon"),
+}
+TOOL = "fletcher-gemini-3.8-flash"
 
 JUDGES = {
     "anthropic_claude-opus-4-5-20251101": "Opus 4.5",
@@ -29,7 +36,7 @@ JUDGES = {
 }
 
 NAMES = {
-    TOOL: "Fletcher (Gemini 3.8 Flash)",
+    **{tool: f"Fletcher ({label})" for tool, (_, label) in FLETCHERS.items()},
     "cubic-v2": "Cubic v2",
     "augment": "Augment",
     "qodo-extended-v2": "Qodo extended v2",
@@ -114,11 +121,12 @@ def text(x, y, words, size=13, fill=INK, weight=400, anchor="start"):
 LEADERBOARD_JUDGE = "anthropic_claude-opus-4-5-20251101"
 
 
-def leaderboard_chart(board, fletcher, names):
+def leaderboard_chart(board, tool_name, fletcher, names):
     """The leaderboard's default view: Core profile, F2, Opus 4.5 judge."""
-    rows = sorted([(t, v) for t, v in board.items()] + [(TOOL, fletcher)], key=lambda x: -x[1]["f2"])
+    rows = sorted([(t, v) for t, v in board.items()] + [(tool_name, fletcher)], key=lambda x: -x[1]["f2"])
     rank = 1 + sum(1 for _, v in board.items() if v["f2"] > fletcher["f2"])
-    title = f"On the leaderboard's default view, Fletcher's {fletcher['f2']:.1f}% F2 places {ordinal(rank)} of {len(rows)}"
+    label = FLETCHERS[tool_name][1]
+    title = f"Fletcher on {label}: {fletcher['f2']:.1f}% F2, {ordinal(rank)} of {len(rows)} on the leaderboard's default view"
     x0, scale, y0, step = 230, 7, 96, 26
     X = lambda v: x0 + v * scale
     y_end = y0 + (len(rows) - 1) * step + 18
@@ -130,9 +138,9 @@ def leaderboard_chart(board, fletcher, names):
     out.append(f"<line x1='{X(0)}' x2='{X(70)}' y1='{y_end}' y2='{y_end}' stroke='{AXIS}'/>")
     for i, (tool, v) in enumerate(rows):
         y = y0 + i * step
-        mine = tool == TOOL
+        mine = tool == tool_name
         out.append(f"<rect x='{X(0)}' y='{y - 8}' width='{X(v['f2']) - X(0)}' height='16' rx='3' fill='{ACCENT if mine else MUTED}'/>")
-        out.append(text(x0 - 10, y + 4.5, NAMES[TOOL] if mine else names.get(tool, name(tool)), 13, INK, 600 if mine else 400, "end"))
+        out.append(text(x0 - 10, y + 4.5, NAMES[tool] if mine else names.get(tool, name(tool)), 13, INK, 600 if mine else 400, "end"))
         end = v["f2"] + JUDGE_ERROR if mine else v["f2"]
         if mine:
             lo, hi = X(v["f2"] - JUDGE_ERROR), X(v["f2"] + JUDGE_ERROR)
@@ -143,25 +151,27 @@ def leaderboard_chart(board, fletcher, names):
     return svg(760, y_end + 86, title, "".join(out))
 
 
-def ranking_chart(sonnet, fletcher):
-    """Top 16 tools under the Sonnet judge, with Fletcher placed by its score."""
+def ranking_chart(sonnet, fletchers):
+    """Top 16 tools under the Sonnet judge, with each Fletcher placed by its score."""
     full = [(t, s) for t, s in sonnet.items() if s["prs"] >= 49]
     top = sorted(full, key=lambda x: -x[1]["f1"])[:16]
-    rows = sorted(top + [(TOOL, fletcher)], key=lambda x: -x[1]["f1"])
-    rank = 1 + sum(1 for _, s in full if s["f1"] > fletcher["f1"])
-    title = f"Fletcher ranks {ordinal(rank)} of {len(full) + 1} tools on F1"
+    rows = sorted(top + list(fletchers.items()), key=lambda x: -x[1]["f1"])
+    ranks = {t: 1 + sum(1 for _, s in full if s["f1"] > f["f1"]) for t, f in fletchers.items()}
+    places = (f"{ordinal(next(iter(ranks.values())))} with either model" if len(set(ranks.values())) == 1
+              else " and ".join(f"{ordinal(r)} on {FLETCHERS[t][1].split()[-1]}" for t, r in ranks.items()))
+    title = f"On F1 over all {len(full) + 1} tools, Fletcher ranks {places}"
     x0, scale, y0, step = 230, 8, 96, 26
     X = lambda v: x0 + v * scale
     y_end = y0 + (len(rows) - 1) * step + 18
     out = [text(24, 34, title, 17, INK, 600)]
-    out.append(text(24, 56, "F1 (%) on all 50 PRs of Martian's offline benchmark; top 16 tools plus Fletcher", 12, QUIET))
+    out.append(text(24, 56, "F1 (%), all categories, all 50 PRs; top 16 tools plus Fletcher, each model ranked against the others alone", 12, QUIET))
     for v in range(0, 70, 10):
         out.append(f"<line x1='{X(v)}' x2='{X(v)}' y1='78' y2='{y_end}' stroke='{GRID}'/>")
         out.append(text(X(v), y_end + 18, v, 12, QUIET, anchor="middle"))
     out.append(f"<line x1='{X(0)}' x2='{X(60)}' y1='{y_end}' y2='{y_end}' stroke='{AXIS}'/>")
     for i, (tool, s) in enumerate(rows):
         y = y0 + i * step
-        mine = tool == TOOL
+        mine = tool in FLETCHERS
         out.append(f"<rect x='{X(0)}' y='{y - 8}' width='{X(s['f1']) - X(0)}' height='16' rx='3' fill='{ACCENT if mine else MUTED}'/>")
         out.append(text(x0 - 10, y + 4.5, name(tool), 13, INK, 600 if mine else 400, "end"))
         end = s["f1"] + JUDGE_ERROR if mine else s["f1"]
@@ -194,7 +204,7 @@ def calibration_chart(by_judge):
     glyphs = dict((j, g) for j, g in legend)
     for i, tool in enumerate(tools):
         y = y0 + i * step
-        label = "Fletcher (50 PRs)" if tool == TOOL else name(tool)
+        label = "Fletcher, Flash" if tool == TOOL else name(tool)
         out.append(text(24, y + 4.5, label, 13, INK, 600 if tool == TOOL else 400))
         points = [(JUDGES[d], by_judge[d][tool]["f1"]) for d in JUDGES if tool in by_judge[d] and by_judge[d][tool]["prs"] >= 44]
         values = [v for _, v in points]
@@ -207,8 +217,8 @@ def calibration_chart(by_judge):
     return svg(760, y_end + 68, title, "".join(out))
 
 
-def scatter_chart(full, fletcher, names):
-    title = "Fletcher finds about half the issues, and about half its findings are real"
+def scatter_chart(full, fletchers, names):
+    title = "Argon finds more of the issues than Flash, at the cost of more noise"
     lo = min(10, int(min(min(s["recall"], s["precision"]) for s in full.values()) // 10 * 10))
     hi = 100 if max(max(s["recall"], s["precision"]) for s in full.values()) > 80 else 80
     x0, x1, y_top, y_bot = 70, 724, 76, 476
@@ -231,9 +241,15 @@ def scatter_chart(full, fletcher, names):
         if tool in full:
             s = full[tool]
             out.append(text(X(s["recall"]) + dx, Y(s["precision"]) + dy, names.get(tool, name(tool)), 12, QUIET, anchor=anchor))
-    fx, fy = X(fletcher["recall"]), Y(fletcher["precision"])
-    out.append(f"<circle cx='{fx:.1f}' cy='{fy:.1f}' r='7' fill='{ACCENT}' stroke='{SURFACE}' stroke-width='2'/>")
-    out.append(text(fx - 12, fy + 4.5, "Fletcher", 13, INK, 600, "end"))
+    points = [(X(f["recall"]), Y(f["precision"]), FLETCHERS[t][1]) for t, f in fletchers.items()]
+    if len(points) == 2:
+        (ax, ay, _), (bx, by, _) = points
+        out.append(f"<path d='M{ax:.1f} {ay:.1f}L{bx:.1f} {by:.1f}' stroke='{ACCENT}' stroke-width='2' stroke-dasharray='3 3'/>")
+    # The first label sits left of its point, later ones right, so a pair never collides.
+    for i, (fx, fy, label) in enumerate(points):
+        out.append(f"<circle cx='{fx:.1f}' cy='{fy:.1f}' r='7' fill='{ACCENT}' stroke='{SURFACE}' stroke-width='2'/>")
+        dx, anchor = (-12, "end") if i == 0 else (12, "start")
+        out.append(text(fx + dx, fy + 4.5, f"Fletcher, {label.split()[-1]}", 13, INK, 600, anchor))
     out.append(text((x0 + x1) / 2, y_bot + 40, "Recall (%): share of golden issues found", 12, QUIET, anchor="middle"))
     out.append(f"<text transform='translate(22 {(y_top + y_bot) / 2}) rotate(-90)' font-size='12' fill='{QUIET}' text-anchor='middle'>Precision (%): share of findings that are real</text>")
     return svg(760, y_bot + 62, title, "".join(out))
@@ -261,7 +277,7 @@ def main():
     results = args.martian.expanduser() / "offline" / "results"
 
     by_judge = {d: pooled(json.loads((results / d / "evaluations.json").read_text())) for d in JUDGES}
-    fletcher = by_judge[GEMINI][TOOL]
+    fletchers = {t: by_judge[GEMINI][t] for t in FLETCHERS}
     sonnet = by_judge["anthropic_claude-sonnet-4-5-20250929"]
 
     data, charts = ROOT / "data", ROOT / "charts"
@@ -274,11 +290,11 @@ def main():
         url: {
             "pr_title": entry.get("pr_title"),
             "golden_comments": entry["golden_comments"],
-            "fletcher": next(r for r in entry["reviews"] if r["tool"] == TOOL),
-            "evaluation": gemini_evals[url][TOOL],
+            "fletcher": {r["tool"]: r for r in entry["reviews"] if r["tool"] in FLETCHERS},
+            "evaluation": {t: gemini_evals[url][t] for t in FLETCHERS if t in gemini_evals.get(url, {})},
         }
         for url, entry in benchmark.items()
-        if any(r["tool"] == TOOL for r in entry["reviews"])
+        if any(r["tool"] in FLETCHERS for r in entry["reviews"])
     }
     (data / "fletcher-reviews.json").write_text(json.dumps(reviews, indent=2, ensure_ascii=False) + "\n")
     (data / "scores-by-judge.json").write_text(
@@ -286,11 +302,12 @@ def main():
     )
     with open(data / "fletcher-per-pr.csv", "w", newline="") as f:
         w = csv.writer(f)
-        w.writerow(["pr", "golden", "matched", "missed", "not_in_golden", "precision", "recall", "input_tokens", "output_tokens", "cost_usd"])
-        for url, r in reviews.items():
-            e, meta = r["evaluation"], r["fletcher"]["fletcher"]
-            w.writerow([url, e["total_golden"], e["tp"], e["fn"], e["fp"], round(e["precision"], 3), round(e["recall"], 3),
-                        meta["input_tokens"], meta["output_tokens"], round(meta["cost_usd"], 4)])
+        w.writerow(["pr", "model", "golden", "matched", "missed", "not_in_golden", "precision", "recall", "input_tokens", "output_tokens", "cost_usd"])
+        for tool in FLETCHERS:
+            for url, r in reviews.items():
+                e, meta = r["evaluation"][tool], r["fletcher"][tool]["fletcher"]
+                w.writerow([url, meta["model"], e["total_golden"], e["tp"], e["fn"], e["fp"], round(e["precision"], 3), round(e["recall"], 3),
+                            meta["input_tokens"], meta["output_tokens"], round(meta["cost_usd"], 4)])
 
     dashboard = json.loads(args.dashboard.expanduser().read_text())
     names = dashboard.get("tool_display_names", {})
@@ -298,7 +315,7 @@ def main():
         JUDGES[j]: {t: v["core"] for t, v in m["overall_metrics"].items() if v["core"]["num_prs"] >= 49}
         for j, m in dashboard["models"].items()
     }
-    fletcher_core = core[JUDGES[GEMINI]].pop(TOOL)
+    fletcher_core = {t: core[JUDGES[GEMINI]].pop(t) for t in FLETCHERS}
     board = {t: v for t, v in core[JUDGES[LEADERBOARD_JUDGE]].items()}
     (data / "leaderboard-core.json").write_text(json.dumps({
         "about": "Martian's dashboard numbers: Core category profile, hidden tools removed, micro-averaged over 50 PRs.",
@@ -306,19 +323,22 @@ def main():
         "by_judge": {j: dict(sorted(v.items(), key=lambda x: -x[1]["f2"])) for j, v in core.items()},
     }, indent=2) + "\n")
 
-    (charts / "ranking.svg").write_text(leaderboard_chart(board, fletcher_core, names))
-    (charts / "ranking-f1-all-tools.svg").write_text(ranking_chart(sonnet, fletcher))
+    for tool, (suffix, _) in FLETCHERS.items():
+        (charts / f"ranking-{suffix}.svg").write_text(leaderboard_chart(board, tool, fletcher_core[tool], names))
+    (charts / "ranking-f1-all-tools.svg").write_text(ranking_chart(sonnet, fletchers))
     (charts / "judge-calibration.svg").write_text(calibration_chart(by_judge))
     (charts / "precision-recall.svg").write_text(scatter_chart(board, fletcher_core, names))
-    for judge in (LEADERBOARD_JUDGE, "anthropic_claude-sonnet-4-5-20250929", "openai_gpt-5.2"):
-        b = core[JUDGES[judge]]
-        for key in ("f2", "f1"):
-            print(f"{JUDGES[judge]:>11} {key}: rank {1 + sum(1 for v in b.values() if v[key] > fletcher_core[key])} of {len(b) + 1}")
 
-    cost = sum(r["fletcher"]["fletcher"]["cost_usd"] for r in reviews.values())
-    print(f"Fletcher: F1 {fletcher['f1']}%, precision {fletcher['precision']}%, recall {fletcher['recall']}% "
-          f"over {fletcher['prs']} PRs ({fletcher['tp']} TP / {fletcher['fp']} FP / {fletcher['fn']} FN); "
-          f"recorded review cost ${cost:.2f}")
+    for tool, (_, label) in FLETCHERS.items():
+        mine, f = fletcher_core[tool], fletchers[tool]
+        print(f"{label}: Core P {mine['precision']} R {mine['recall']} F1 {mine['f1']} F2 {mine['f2']}")
+        for judge in (LEADERBOARD_JUDGE, "anthropic_claude-sonnet-4-5-20250929", "openai_gpt-5.2"):
+            b = core[JUDGES[judge]]
+            for key in ("f2", "f1"):
+                print(f"  {JUDGES[judge]:>11} {key}: rank {1 + sum(1 for v in b.values() if v[key] > mine[key])} of {len(b) + 1}")
+        cost = sum(r["fletcher"][tool]["fletcher"]["cost_usd"] for r in reviews.values())
+        print(f"  all categories: F1 {f['f1']}%, precision {f['precision']}%, recall {f['recall']}% "
+              f"over {f['prs']} PRs ({f['tp']} TP / {f['fp']} FP / {f['fn']} FN); recorded review cost ${cost:.2f}")
 
 
 if __name__ == "__main__":

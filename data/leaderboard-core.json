@@ -1,14 +1,26 @@
 {
   "about": "Martian's dashboard numbers: Core category profile, hidden tools removed, micro-averaged over 50 PRs.",
   "fletcher_gemini_judge": {
-    "precision": 50.6,
-    "recall": 50.6,
-    "f1": 50.6,
-    "f2": 50.6,
-    "tp": 80,
-    "fp": 78,
-    "fn": 78,
-    "num_prs": 50
+    "fletcher-gemini-3.8-flash": {
+      "precision": 50.6,
+      "recall": 50.6,
+      "f1": 50.6,
+      "f2": 50.6,
+      "tp": 80,
+      "fp": 78,
+      "fn": 78,
+      "num_prs": 50
+    },
+    "fletcher-gemini-4-argon": {
+      "precision": 43.8,
+      "recall": 62.0,
+      "f1": 51.3,
+      "f2": 57.2,
+      "tp": 98,
+      "fp": 126,
+      "fn": 60,
+      "num_prs": 50
+    }
   },
   "by_judge": {
     "Opus 4.5": {
